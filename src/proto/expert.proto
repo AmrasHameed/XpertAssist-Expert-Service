@@ -3,6 +3,8 @@ package expert;
 
 service Expert {
     rpc LoginExpert(LoginExpertRequest) returns (LoginExpertResponse);
+    rpc ExpertSignupOtp(ExpertSignupOtpRequest) returns (ExpertSignupOtpResponse);
+    rpc ExpertResendOtp(ExpertSignupOtpRequest) returns (ExpertSignupOtpResponse);
     rpc RegisterExpert(RegisterExpertRequest) returns (RegisterExpertResponse);
     rpc GoogleLoginExpert(GoogleLoginExpertRequest) returns (GoogleLoginExpertResponse);
 }
@@ -26,6 +28,7 @@ message RegisterExpertRequest {
     string mobile = 3;
     string password = 4;
     string expertImage = 5;
+    string otp = 6;
 }
 
 message RegisterExpertResponse {
@@ -48,4 +51,13 @@ message GoogleLoginExpertResponse {
     string _id = 4;
     string refreshToken = 5;
     string image = 6;
+}
+
+message ExpertSignupOtpRequest {
+    string email = 1;
+    string name = 2;
+}
+
+message ExpertSignupOtpResponse {
+    string message = 1;
 }

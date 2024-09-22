@@ -1,20 +1,56 @@
 import auth from '../middleware/auth';
 import ExpertRepository from '../repositories/expertRepo';
 import bcrypt from '../services/bcrypt';
+import { getOtpByEmail } from '../services/redisClient';
 import { ExpertInterface } from '../utilities/interface';
+import { sendOtp } from '../utilities/sendOtp';
 
-const expertRepository = new ExpertRepository()
+const expertRepository = new ExpertRepository();
 
 export default class RegisterUseCase {
+  expertSignupOtp = async (name: string, email: string) => {
+    try {
+      const user = (await expertRepository.findByEmail(
+        email
+      )) as ExpertInterface;
+      if (user) {
+        return { message: 'UserExist' };
+      }
+      const response = await sendOtp({ email, name });
+      return { message: response };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  expertResendOtp = async (name: string, email: string) => {
+    try {
+      const response = await sendOtp({ email, name });
+      return { message: response };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
   registerExpert = async (
     name: string,
     email: string,
     password: string,
     mobile: string,
-    expertImage: string
+    expertImage: string,
+    otp: string
   ) => {
     try {
-      const expert = (await expertRepository.findByEmail(email)) as ExpertInterface;
+      const storedOtp = await getOtpByEmail(email);
+      console.log(storedOtp, '====storedOTP');
+      console.log(otp, '====OTP');
+      if (storedOtp === null || storedOtp.toString() !== otp.toString()) {
+        console.log('OTP does not match or is not found.');
+        return { message: 'OTP does not match or is not found.' };
+      }
+      const expert = (await expertRepository.findByEmail(
+        email
+      )) as ExpertInterface;
       if (expert) {
         return { message: 'UserExist' };
       }
@@ -28,7 +64,9 @@ export default class RegisterUseCase {
       };
       const response = await expertRepository.saveExpert(newUserData);
       if (response.message === 'ExpertCreated') {
-        const user = (await expertRepository.findByEmail(email)) as ExpertInterface;
+        const user = (await expertRepository.findByEmail(
+          email
+        )) as ExpertInterface;
         const token = await auth.createToken(user._id.toString(), '15m');
         const refreshToken = await auth.createToken(user._id.toString(), '7d');
         return {

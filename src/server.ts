@@ -37,6 +37,8 @@ const server = new grpc.Server();
 
 server.addService(grpcObject.expert.Expert.service, {
   LoginExpert: loginController.loginExpert,
+  ExpertSignupOtp: registerController.expertSignupOtp,
+  ExpertResendOtp: registerController.expertResendOtp,
   RegisterExpert: registerController.registerExpert,
   GoogleLoginExpert : loginController.googleLoginExpert,
 });
