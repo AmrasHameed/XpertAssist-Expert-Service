@@ -5,11 +5,13 @@ import 'dotenv/config';
 import connectDB from './config/mongo';
 import LoginController from './controllers/loginController';
 import RegisterController from './controllers/registerController';
+import ExpertController from './controllers/expertController';
 
 
 
 const loginController = new LoginController();
 const registerController = new RegisterController();
+const expertController = new ExpertController();
 
 connectDB()
 
@@ -23,7 +25,6 @@ const packageDef = protoLoader.loadSync(PROTO_PATH, {
 });
 
 const grpcObject = grpc.loadPackageDefinition(packageDef) as any;
-
 if (
   !grpcObject.expert ||
   !grpcObject.expert.Expert ||
@@ -40,7 +41,10 @@ server.addService(grpcObject.expert.Expert.service, {
   ExpertSignupOtp: registerController.expertSignupOtp,
   ExpertResendOtp: registerController.expertResendOtp,
   RegisterExpert: registerController.registerExpert,
-  GoogleLoginExpert : loginController.googleLoginExpert,
+  GoogleLoginExpert: loginController.googleLoginExpert,
+  GetExpert: expertController.getExpert,
+  UpdateExpert: expertController.updateExpert,
+  ChangePassword: expertController.changePassword,
 });
 
 const SERVER_ADDRESS = process.env.GRPC_SERVER_PORT || '50003';

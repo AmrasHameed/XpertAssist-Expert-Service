@@ -15,6 +15,10 @@ const ExpertSchema: Schema = new Schema(
       type: Number,
       required: true,
     },
+    service: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -25,6 +29,10 @@ const ExpertSchema: Schema = new Schema(
     accountStatus: {
       type: String,
       default: 'UnBlocked',
+    },
+    isVerified: {
+      type: String,
+      default: 'false',
     },
   },
   {

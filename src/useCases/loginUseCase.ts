@@ -27,9 +27,13 @@ export default class LoginUseCase {
         message: 'Success',
         name: expert.name,
         token,
+        service: expert.service,
         _id: expert._id,
         refreshToken,
         image: expert.expertImage,
+        email: expert.email,
+        mobile: expert.mobile,
+        isVerified: expert.isVerified,
       };
     } catch (error) {
       return { message: (error as Error).message };
@@ -53,9 +57,13 @@ export default class LoginUseCase {
         message: 'Success',
         name: user.name,
         token,
+        service: user.service,
         _id: user._id,
         refreshToken,
         image: user.expertImage,
+        email: user.email,
+        mobile: user.mobile,
+        isVerified: user.isVerified,
       };
     } catch (error) {
       return { message: (error as Error).message };

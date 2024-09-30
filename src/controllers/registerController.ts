@@ -38,20 +38,21 @@ export default class RegisterController {
         email: string;
         mobile: string;
         password: string;
+        service: string;
         expertImage: string;
         otp: string;
       };
     },
     callback: (error: any, response: any) => void
   ) => {
-    const { name, email, password, mobile, expertImage, otp } = call.request;
+    const { name, email, password, mobile, expertImage, otp, service } = call.request;
     try {
-      console.log(otp, 'otp reached controller');
       const response = await registerUseCase.registerExpert(
         name,
         email,
         password,
         mobile,
+        service,
         expertImage,
         otp
       );

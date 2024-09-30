@@ -1,5 +1,5 @@
 import Expert from '../entities/expert';
-import { RegisterExpert, ExpertInterface } from '../utilities/interface';
+import { RegisterExpert, ExpertInterface, UpdateExpertRequest } from '../utilities/interface';
 
 export default class ExpertRepository {
   findByEmail = async (email: string): Promise<ExpertInterface | null> => {
@@ -17,6 +17,7 @@ export default class ExpertRepository {
       name: expertData.name,
       email: expertData.email,
       mobile: expertData.mobile,
+      service: expertData.service,
       password: expertData.password,
       expertImage: expertData.expertImage,
     });
@@ -28,6 +29,40 @@ export default class ExpertRepository {
     } catch (error) {
       console.error('Error saving expert:', (error as Error).message);
       return { message: (error as Error).message }; 
+    }
+  };
+
+  findById = async (id: string) => {
+    try {
+      const expert = await Expert.findById(id).select(
+        '_id name email mobile expertImage password'
+      ).lean();
+      return expert;
+    } catch (error) {
+      console.error('Error finding service: ', (error as Error).message);
+      throw new Error('Service search failed');
+    }
+  };
+
+  findByIdAndUpdate = async (
+    id: string,
+    updates: Partial<UpdateExpertRequest> ,
+  ): Promise<{ message: string }> => {
+    try {
+      const updatedExpert = await Expert.findByIdAndUpdate(
+        id,
+        updates,
+        { new: true, runValidators: true }
+      );
+      if (!updatedExpert) {
+        console.log('Expert not found.');
+        return { message: 'Expert not found.' };
+      }
+      console.log('Expert updated successfully.');
+      return { message: 'ExpertUpdated' };
+    } catch (error) {
+      console.error('Error updating user:', (error as Error).message);
+      return { message: (error as Error).message };
     }
   };
 }

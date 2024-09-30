@@ -37,6 +37,7 @@ export default class RegisterUseCase {
     email: string,
     password: string,
     mobile: string,
+    service: string,
     expertImage: string,
     otp: string
   ) => {
@@ -59,6 +60,7 @@ export default class RegisterUseCase {
         name,
         email,
         mobile,
+        service,
         password: hashedPassword,
         expertImage,
       };
@@ -73,9 +75,13 @@ export default class RegisterUseCase {
           message: 'Success',
           name: user.name,
           token,
+          service: user.service,
           _id: user._id,
           refreshToken,
           image: user.expertImage,
+          email: user.email,
+          mobile: user.mobile,
+          isVerified: user.isVerified,
         };
       } else {
         return { message: 'UserNotCreated' };
