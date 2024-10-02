@@ -12,6 +12,16 @@ export default class ExpertRepository {
     }
   };
 
+  find = async () => {
+    try {
+      const services = await Expert.find()
+      return services;
+    } catch (error) {
+      console.error('Error finding service: ', (error as Error).message);
+      throw new Error('Service search failed');
+    }
+  }; 
+
   saveExpert = async (expertData: RegisterExpert): Promise<{ message: string }> => {
     const newUser = new Expert({
       name: expertData.name,
@@ -34,9 +44,7 @@ export default class ExpertRepository {
 
   findById = async (id: string) => {
     try {
-      const expert = await Expert.findById(id).select(
-        '_id name email mobile expertImage password'
-      ).lean();
+      const expert = await Expert.findById(id);
       return expert;
     } catch (error) {
       console.error('Error finding service: ', (error as Error).message);

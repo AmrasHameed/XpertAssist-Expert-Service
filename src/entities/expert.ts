@@ -34,6 +34,12 @@ const ExpertSchema: Schema = new Schema(
       type: String,
       default: 'false',
     },
+    
+    verificationDetails: {
+      govIdType: { type: String },
+      govIdNumber: { type: String },
+      document: { type: String },
+    },
   },
   {
     timestamps: true,

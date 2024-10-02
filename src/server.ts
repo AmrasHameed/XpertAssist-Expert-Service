@@ -45,6 +45,11 @@ server.addService(grpcObject.expert.Expert.service, {
   GetExpert: expertController.getExpert,
   UpdateExpert: expertController.updateExpert,
   ChangePassword: expertController.changePassword,
+  VerifyExpert: expertController.verifyExpert,
+  GetExperts: expertController.getExperts,
+  ExpertVerification: expertController.expertVerification,
+  BlockExpert: expertController.blockExpert,
+  IsBlocked: expertController.isBlocked,
 });
 
 const SERVER_ADDRESS = process.env.GRPC_SERVER_PORT || '50003';
