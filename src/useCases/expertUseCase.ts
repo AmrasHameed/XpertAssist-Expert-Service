@@ -44,7 +44,8 @@ export default class ExpertUseCase {
       if (user) {
         const response = await expertRepository.findByIdAndUpdate(id, updates);
         if (response.message === 'ExpertUpdated') {
-          return { message: 'success' };
+          const expert = (await expertRepository.findById(id)) as ExpertInterface;
+          return { message: 'success', name: expert.name, mobile: expert.mobile, expertImage: expert.expertImage};
         } else {
           return { message: 'Expert Not Updated' };
         }

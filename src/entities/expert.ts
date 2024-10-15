@@ -34,7 +34,10 @@ const ExpertSchema: Schema = new Schema(
       type: String,
       default: 'false',
     },
-    
+    status: {
+      type: String,
+      default: 'offline',
+    },
     verificationDetails: {
       govIdType: { type: String },
       govIdNumber: { type: String },

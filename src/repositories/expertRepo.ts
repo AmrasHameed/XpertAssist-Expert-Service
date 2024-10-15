@@ -17,8 +17,8 @@ export default class ExpertRepository {
       const services = await Expert.find()
       return services;
     } catch (error) {
-      console.error('Error finding service: ', (error as Error).message);
-      throw new Error('Service search failed');
+      console.error('Error finding Expert: ', (error as Error).message);
+      throw new Error('Expert search failed');
     }
   }; 
 
@@ -47,8 +47,8 @@ export default class ExpertRepository {
       const expert = await Expert.findById(id);
       return expert;
     } catch (error) {
-      console.error('Error finding service: ', (error as Error).message);
-      throw new Error('Service search failed');
+      console.error('Error finding expert: ', (error as Error).message);
+      throw new Error('Expert search failed');
     }
   };
 
