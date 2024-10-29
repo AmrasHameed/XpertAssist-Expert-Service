@@ -44,8 +44,15 @@ export default class ExpertUseCase {
       if (user) {
         const response = await expertRepository.findByIdAndUpdate(id, updates);
         if (response.message === 'ExpertUpdated') {
-          const expert = (await expertRepository.findById(id)) as ExpertInterface;
-          return { message: 'success', name: expert.name, mobile: expert.mobile, expertImage: expert.expertImage};
+          const expert = (await expertRepository.findById(
+            id
+          )) as ExpertInterface;
+          return {
+            message: 'success',
+            name: expert.name,
+            mobile: expert.mobile,
+            expertImage: expert.expertImage,
+          };
         } else {
           return { message: 'Expert Not Updated' };
         }
@@ -179,7 +186,7 @@ export default class ExpertUseCase {
         }
         const response = await expertRepository.findByIdAndUpdate(id, updates);
         if (response.message === 'ExpertUpdated') {
-          return { message: 'success'};
+          return { message: 'success' };
         } else {
           return { message: 'Request Failed' };
         }
@@ -193,13 +200,86 @@ export default class ExpertUseCase {
   isBlocked = async (id: string) => {
     try {
       const expert = await expertRepository.findById(id);
-      if (expert?.accountStatus==='Blocked') {
-        return {message: 'Blocked' };
-      } else if(expert?.accountStatus==='UnBlocked') {
+      if (expert?.accountStatus === 'Blocked') {
+        return { message: 'Blocked' };
+      } else if (expert?.accountStatus === 'UnBlocked') {
         return { message: 'UnBlocked' };
       } else {
-        return {message: 'Expert Not Found'}
+        return { message: 'Expert Not Found' };
       }
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  setOnline = async (id: string) => {
+    try {
+      const user = (await expertRepository.findById(id)) as ExpertInterface;
+      if (user) {
+        const updates: { [key: string]: any } = {
+          status: 'online',
+        };
+        const response = await expertRepository.findByIdAndUpdate(id, updates);
+        if (response.message === 'ExpertUpdated') {
+          return { message: 'success' };
+        } else {
+          return { message: 'Request Failed' };
+        }
+      }
+      return { message: 'Expert does not exist' };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  setOffline = async (id: string) => {
+    try {
+      const user = (await expertRepository.findById(id)) as ExpertInterface;
+      if (user) {
+        const updates: { [key: string]: any } = {
+          status: 'offline',
+        };
+        const response = await expertRepository.findByIdAndUpdate(id, updates);
+        if (response.message === 'ExpertUpdated') {
+          return { message: 'success' };
+        } else {
+          return { message: 'Request Failed' };
+        }
+      }
+      return { message: 'Expert does not exist' };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  getOnlineExperts = async (serviceId: string) => {
+    try {
+      const response = await expertRepository.findExpertByService(serviceId);
+      if (response.expertIds) {
+        return { expertIds: response.expertIds }; 
+      } else {
+        return { message: 'No online experts found for the given service ID.' };
+      }
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  notAvailable = async (id: string) => {
+    try {
+      const user = (await expertRepository.findById(id)) as ExpertInterface;
+      if (user) {
+        const updates: { [key: string]: any } = {
+          isAvailable: false,
+        };
+        const response = await expertRepository.findByIdAndUpdate(id, updates);
+        if (response.message === 'ExpertUpdated') {
+          return { message: 'success' };
+        } else {
+          return { message: 'Request Failed' };
+        }
+      }
+      return { message: 'Expert does not exist' };
     } catch (error) {
       return { message: (error as Error).message };
     }

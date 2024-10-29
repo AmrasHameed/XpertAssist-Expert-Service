@@ -43,11 +43,17 @@ const ExpertSchema: Schema = new Schema(
       govIdNumber: { type: String },
       document: { type: String },
     },
+    isAvailable: {
+      type: Boolean,
+      default: true,
+    }
   },
   {
     timestamps: true,
   }
 );
+
+ExpertSchema.index({ location: '2dsphere' });
 
 const expertModel = mongoose.model<ExpertInterface>('Expert', ExpertSchema);
 

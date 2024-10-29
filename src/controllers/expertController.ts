@@ -15,7 +15,6 @@ export default class ExpertController {
     try {
       const { id } = call.request;
       const expert = await expertUseCase.getExpert(id);
-      console.log(expert)
       callback(null, expert);
     } catch (error) {
       console.error('Error fetching Expert:', error);
@@ -98,8 +97,8 @@ export default class ExpertController {
     callback: (error: any, response: any) => void
   ) => {
     try {
-      const services = await expertUseCase.getExperts();
-      callback(null, services);
+      const experts = await expertUseCase.getExperts();
+      callback(null, experts);
     } catch (error) {
       console.error('Error fetching services:', error);
       callback(null, { error: (error as Error).message });
@@ -162,4 +161,77 @@ export default class ExpertController {
       callback(null, { error: (error as Error).message });
     }
   };
+
+  setOnline = async (
+    call: {
+      request: {
+        id: string;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const { id } = call.request;
+      const response = await expertUseCase.setOnline(id);
+      callback(null, response);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
+  setOffline = async (
+    call: {
+      request: {
+        id: string;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const {id} = call.request;
+      const response = await expertUseCase.setOffline(id);
+      callback(null, response);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
+  getOnlineExperts = async (
+    call: {
+      request: {
+        id: string;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const {id} = call.request;
+      const response = await expertUseCase.getOnlineExperts(id);
+      callback(null, response);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
+  notAvailable = async (
+    call: {
+      request: {
+        id: string;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const {id} = call.request;
+      const response = await expertUseCase.notAvailable(id);
+      callback(null, response);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
 }

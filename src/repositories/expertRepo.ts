@@ -73,4 +73,23 @@ export default class ExpertRepository {
       return { message: (error as Error).message };
     }
   };
+
+  findExpertByService = async (
+    serviceId: string,
+  ): Promise<{ expertIds?: string[];message?: string }> => {
+    try {
+      const experts = await Expert.find({
+        service: serviceId,
+        status: 'online',
+        isVerified: 'true', 
+        accountStatus: 'UnBlocked',
+        isAvailable: true,
+      }).select('_id'); 
+      const expertIds = experts.map(expert => expert._id.toString());
+      return { expertIds };
+    } catch (error) {
+      console.error('Error Fetching user:', (error as Error).message);
+      return { message: (error as Error).message };
+    }
+  };
 }
