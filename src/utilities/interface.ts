@@ -17,6 +17,12 @@ export interface ExpertInterface extends Document {
   accountStatus: string;
   isVerified: boolean;
   verificationDetails?: VerificationDetails;
+  isAvailable?: boolean;
+  earnings?: Array<{
+    jobId: string;
+    earning: number;
+  }>;
+  totalEarning?: number;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -57,6 +57,7 @@ server.addService(grpcObject.expert.Expert.service, {
   SetOffline: expertController.setOffline,
   GetOnlineExperts: expertController.getOnlineExperts,
   NotAvailable: expertController.notAvailable,
+  StoreEarning: expertController.storeEarning,
 });
 
 const SERVER_ADDRESS = process.env.GRPC_SERVER_PORT || '50003';

@@ -46,14 +46,29 @@ const ExpertSchema: Schema = new Schema(
     isAvailable: {
       type: Boolean,
       default: true,
-    }
+    },
+    earnings: [
+      {
+        jobId: {
+          type: String,
+          required: true,
+        },
+        earning: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    totalEarning: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-ExpertSchema.index({ location: '2dsphere' });
 
 const expertModel = mongoose.model<ExpertInterface>('Expert', ExpertSchema);
 

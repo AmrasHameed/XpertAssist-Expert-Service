@@ -284,4 +284,31 @@ export default class ExpertUseCase {
       return { message: (error as Error).message };
     }
   };
+
+  storeEarning = async (id: string, jobId: string, totalEarning:number) => {
+    try {
+      const expert = (await expertRepository.findById(id)) as ExpertInterface;
+      console.log(id, jobId, totalEarning,'earnig data')
+      if (expert) {
+        totalEarning = Number(totalEarning.toFixed(2))
+        const newEarning = { jobId, earning:totalEarning };
+        const updatedEarnings = [...(expert.earnings ?? []), newEarning];
+        const totalEarnings = updatedEarnings.reduce((total, job) => total + job.earning, 0);
+        const updates: { [key: string]: any } = {
+          isAvailable: true,
+          earnings: updatedEarnings,
+          totalEarning: Number(totalEarnings.toFixed(2)),
+        };
+        const response = await expertRepository.findByIdAndUpdate(id, updates);
+        if (response.message === 'ExpertUpdated') {
+          return { message: 'success' };
+        } else {
+          return { message: 'Request Failed' };
+        }
+      }
+      return { message: 'Expert does not exist' };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
 }

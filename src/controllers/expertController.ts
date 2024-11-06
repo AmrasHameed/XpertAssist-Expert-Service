@@ -234,4 +234,25 @@ export default class ExpertController {
     }
   };
 
+  storeEarning = async (
+    call: {
+      request: {
+        id: string;
+        jobId: string;
+        totalEarning: number;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const {id, jobId, totalEarning} = call.request;
+      const response = await expertUseCase.storeEarning(id, jobId, totalEarning);
+      callback(null, response);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
+
 }
