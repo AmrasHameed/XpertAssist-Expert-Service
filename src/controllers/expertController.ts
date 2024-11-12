@@ -254,5 +254,92 @@ export default class ExpertController {
     }
   };
 
+  getExpertDetails = async (
+    call: {
+      request: {
+        id: string;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const {id} = call.request;
+      const {expert} = await expertUseCase.getExpertDetails(id);
+      callback(null, expert);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
+  deductFromWallet = async (
+    call: {
+      request: {
+        expertId: string;
+        amount: number;
+        jobId: string;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const {expertId, amount, jobId} = call.request;
+      const response = await expertUseCase.deductFromWallet(expertId, amount, jobId);
+      callback(null, response);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
+  getWalletData = async (
+    call: {
+      request: {
+        id: string;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const {id} = call.request;
+      const reponse = await expertUseCase.getWalletData(id);
+      callback(null, reponse);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
+  withdraw = async (
+    call: {
+      request: {
+        id: string;
+        amount: number;
+      };
+    },
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const {id, amount} = call.request;
+      const reponse = await expertUseCase.withdraw(id, amount);
+      callback(null, reponse);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
+
+  getExpertData = async (
+    call: any,
+    callback: (error: any, response: any) => void
+  ) => {
+    try {
+      const expertData = await expertUseCase.getExpertData();
+      callback(null, expertData);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      callback(null, { error: (error as Error).message });
+    }
+  };
 
 }

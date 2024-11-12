@@ -58,6 +58,11 @@ server.addService(grpcObject.expert.Expert.service, {
   GetOnlineExperts: expertController.getOnlineExperts,
   NotAvailable: expertController.notAvailable,
   StoreEarning: expertController.storeEarning,
+  GetExpertDetails: expertController.getExpertDetails,
+  DeductFromWallet: expertController.deductFromWallet,
+  GetWalletData: expertController.getWalletData,
+  Withdraw: expertController.withdraw,
+  GetExpertData: expertController.getExpertData,
 });
 
 const SERVER_ADDRESS = process.env.GRPC_SERVER_PORT || '50003';

@@ -51,12 +51,14 @@ const ExpertSchema: Schema = new Schema(
       {
         jobId: {
           type: String,
-          required: true,
         },
         earning: {
           type: Number,
           required: true,
         },
+        type: {
+          type: String,
+        }
       },
     ],
     totalEarning: {

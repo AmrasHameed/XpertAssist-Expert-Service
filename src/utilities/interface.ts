@@ -19,8 +19,9 @@ export interface ExpertInterface extends Document {
   verificationDetails?: VerificationDetails;
   isAvailable?: boolean;
   earnings?: Array<{
-    jobId: string;
+    jobId?: string;
     earning: number;
+    type: string;
   }>;
   totalEarning?: number;
   createdAt: Date;

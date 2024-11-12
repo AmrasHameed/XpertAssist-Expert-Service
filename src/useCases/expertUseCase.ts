@@ -291,7 +291,7 @@ export default class ExpertUseCase {
       console.log(id, jobId, totalEarning,'earnig data')
       if (expert) {
         totalEarning = Number(totalEarning.toFixed(2))
-        const newEarning = { jobId, earning:totalEarning };
+        const newEarning = { jobId, type:'credited', earning:totalEarning };
         const updatedEarnings = [...(expert.earnings ?? []), newEarning];
         const totalEarnings = updatedEarnings.reduce((total, job) => total + job.earning, 0);
         const updates: { [key: string]: any } = {
@@ -307,6 +307,76 @@ export default class ExpertUseCase {
         }
       }
       return { message: 'Expert does not exist' };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+
+  getExpertDetails = async (id: string) => {
+    try {
+      const expert = (await expertRepository.findById(id)) as ExpertInterface;
+      if (expert) {
+        return {expert}
+      }
+      return { message: 'Expert does not exist' };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  deductFromWallet = async (expertId: string, amount: number, jobId: string) => {
+    try {
+      const response = await expertRepository.deductFromWallet(expertId, amount, jobId);
+      if (response === 'success') {
+        return {message : 'success'}
+      } 
+      return { message: 'Expert does not exist' };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  getWalletData = async (id: string) => {
+    try {
+      const expert = (await expertRepository.findById(id)) as ExpertInterface;
+      if (expert) {
+        const response = {
+          totalEarning: expert.totalEarning,
+          earnings: expert?.earnings?.map((earning) => ({
+            jobId: earning.jobId,
+            earning: earning.earning,
+            type: earning.type,
+          })),
+        };
+        return response
+      }
+      return { message: 'Expert does not exist' };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  withdraw = async (id: string, amount: number) => {
+    try {
+      const response = await expertRepository.withdraw(id, amount);
+      if (response === 'success') {
+        return {message : 'success'}
+      } 
+      return { message: 'Expert does not exist' };
+    } catch (error) {
+      return { message: (error as Error).message };
+    }
+  };
+
+  getExpertData = async () => {
+    try {
+      const expertData = await expertRepository.getExpertData();
+      if (expertData) {
+        return expertData;
+      } else {
+        return { message: 'No Experts Found' };
+      }
     } catch (error) {
       return { message: (error as Error).message };
     }
